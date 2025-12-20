@@ -1,0 +1,90 @@
+Browser
+  ↓
+EC2 (Docker Container)
+  ↓
+Frontend (HTML + CSS + JS)
+  ↓  (fetch API)
+API Gateway (HTTPS)
+  ↓
+AWS Lambda
+  ↓
+DynamoDB
+
+                              FRONTEND
+
+
+STEP 1 : EC2 launch(QR frontend) > UBUNTU OS > KEY PAIR > LAUNCH
+
+
+EC2-la Allow Pannanum Ports (MUST)
+🔹 Minimum Required (Your Project)
+Port	Protocol	    Source	    Purpose
+22	   SSH	My IP / Your IP	    EC2 login
+80	   HTTP	        0.0.0.0/0	  Frontend (Docker / Nginx)
+443	   HTTPS      	0.0.0.0/0	  Secure camera access
+
+
+connect
+
+sudo apt update -y
+sudo apt install docker.io -y
+
+sudo systemctl start docker
+sudo systemctl enable docker
+
+Check:
+
+docker --version
+
+Create Project Folder
+mkdir qr-frontend
+cd qr-frontend
+
+
+Files:
+
+index.html
+style.css
+script.js
+Dockerfile
+
+IMPORTANT CHECKS
+
+Dockerfile name must be exactly:
+
+Dockerfile
+
+Terminal-la:
+
+1. cd Desktop\QR Attendance
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2. dir
+Output-la idhu irukanum:
+
+Dockerfile
+index.html
+style.css
+script.js
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. docker build -t qr-attendance-frontend .
+
+Success message varanum:
+
+Successfully built xxxxx
+Successfully tagged qr-attendance-frontend:latest
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4. docker images
+
+Output-la:
+
+qr-attendance-frontend   latest
+
+5. docker run -d -p 80:80 --name qr_frontend qr-attendance-frontend
+
+Browser test (LOCAL)
+http://localhost
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
