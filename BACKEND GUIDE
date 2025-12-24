@@ -1,0 +1,119 @@
+BACKEND
+>>>>>>>>
+
+Frontend (EC2 / S3)
+        ↓
+API Gateway
+        ↓
+AWS Lambda (Python)
+        ↓
+DynamoDB
+
+STEP 1: DynamoDB Table Create pannalam
+AWS Console → DynamoDB → Create table
+
+| Setting       | Value                 |
+| ------------- | --------------------- |
+| Table name    | `QR_Attendance`       |
+| Partition key | `student_id` (String) |
+| Sort key      | `date` (String) ❗    |
+| Capacity      | On-demand             |
+
+👉 Create table click pannu
+
+📌 Why sort key?
+→ Same student daily attendance handle panna
+
+
+STEP 2: IAM Role for Lambda
+IAM → Roles → Create role
+
+1️⃣ Trusted entity → AWS service
+2️⃣ Use case → Lambda
+3️⃣ Permissions attach pannu:
+
+AmazonDynamoDBFullAccess
+
+AWSLambdaBasicExecutionRole
+
+Role name:
+Lambda_QR_Attendance_Role
+
+STEP 3: AWS Lambda Function
+Lambda → Create function
+
+| Option              | Value                       |
+| ------------------- | --------------------------- |
+| Author from scratch | ✔️                          |
+| Function name       | `qr-attendance-backend`     |
+| Runtime             | Python 3.10                 |
+| Execution role      | Existing role               |
+| Role                | `Lambda_QR_Attendance_Role` |
+
+STEP 4: Lambda CODE (IMPORTANT 🔥)
+Paste this FULL CODE 👇(PYTHON BACKEND)
+👉 Deploy click pannu
+
+STEP 5: API Gateway Create pannalam
+API Gateway → Create API
+
+| Option          | Value                   |
+| --------------- | ----------------------- |
+| API type        | HTTP API                |
+| Integration     | Lambda                  |
+| Lambda function | `qr-attendance-backend` |
+| Route           | POST `/attendance`      |
+
+Enable:
+✔️ CORS
+STEP 5: API Gateway Setup
+API Gateway → Create API
+
+✔️ HTTP API
+✔️ Integration → Lambda
+✔️ Route → POST /attendance
+✔️ Enable CORS
+
+👉 Create
+
+👉 Create API
+
+STEP 6: API URL Copy pannu
+
+Example:
+
+https://abc123.execute-api.us-east-1.amazonaws.com/attendance
+
+STEP 7: Frontend Connect
+
+EC2 Docker frontend → index.html
+
+const apiUrl = "https://xyz123.execute-api.us-east-1.amazonaws.com/attendance";
+
+
+Save → Rebuild docker → Run again
+
+docker build -t qr-frontend .
+docker rm -f qr_frontend
+docker run -d -p 80:80 --name qr_frontend qr-frontend
+
+
+🟡 STEP 8: Final Test 🎉
+✔️ QR scan
+✔️ Success message
+✔️ DynamoDB table-la record
+
+
+
+
+
+👉 Replace pannu
+👉 Save
+👉 Browser refresh
+
+
+
+
+
+
+
